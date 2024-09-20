@@ -1,0 +1,17 @@
+--@name libs/jacobs/PropCustom/sv/1.txt
+--@include ../../PropWrap/sv/4.txt
+--@include ../../Object/sh/2.txt
+--@include ../../Async/sh/2.txt
+
+local PropWrap = require("../../PropWrap/sv/4.txt")
+local NewType = require("../../Object/sh/2.txt")
+local Async = require("../../Async/sh/2.txt")
+
+local PropCustom = NewType(PropWrap)
+PropCustom.InitializeAsync = Async(function(callback, self, pos, ang, verts, frozen)
+    self.e = self.generate(function()
+        return prop.createCustom(pos, ang, verts, frozen)
+    end)()
+    callback()
+end)
+return PropCustom

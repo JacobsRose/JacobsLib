@@ -1,0 +1,38 @@
+--@server
+--@include ../../Object/sh/2.txt
+--@include ../../MeshBuilder/sv/1.txt
+--@include ../../Async/sh/2.txt
+--@include ../../PropDefault/sv/1.txt
+
+local NewType = require("../../Object/sh/2.txt")
+local MeshBuilder = require("../../MeshBuilder/sv/1.txt")
+local Async = require("../../Async/sh/2.txt")
+local PropDefault = require("../../PropDefault/sv/1.txt")
+
+local Mesh = MeshBuilder:new("https://raw.githubusercontent.com/Gmod-Creations/Durango/main/.obj", false)
+
+local Durango = NewType(PropDefault)
+
+Durango.InitializeAsync = Async(function(callback, self, pos, ang, color)
+
+
+    PropDefault.InitializeAsync(self, pos, ang, "models/sprops/rectangles/size_78/rect_78x192x3.mdl", true)()
+
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_body", "phoenix_storms/Fender_white", color, 5)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_bumperLed", "WTP/paint_1", Color(255,255,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_chmsl", "WTP/paint_1", Color(255,0,0), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_chrome", "phoenix_storms/Fender_chrome", Color(255,255,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_dashled", "WTP/paint_1", Color(100,100,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_glass", "phoenix_storms/pack2/chrome", Color(255,255,255,50), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_leather", "sprops/trans/wheels/wheel_d_rim1", Color(50,50,50), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_led", "WTP/paint_1", Color(255,255,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_light", "WTP/paint_1", Color(255,255,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_light2", "WTP/paint_1", Color(255,255,255), 1)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_metal", "phoenix_storms/Fender_chrome", Color(255,255,255), 2)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_plastic", "sprops/trans/wheels/wheel_d_rim1", Color(10,10,10), 9)
+    Mesh:BuildComponent(self.e , Vector(0,0,20), Angle(0,0,0), Vector(1), "body_red", "phoenix_storms/Fender_white", Color(255,0,0), 1)
+    
+
+    callback()
+end)
+return Durango

@@ -1,0 +1,35 @@
+--@name libs/jacobs/Object/sh/2.txt
+--@include ../../Async/sh/2.txt
+local Async = require("../../Async/sh/2.txt")
+local Object = {}
+
+Object.__index = Object
+Object.__string = "Some Class"
+
+function Object:new(...)
+    local instance = {}
+    setmetatable(instance, self)
+    if self.Initialize ~= nil then
+        instance:Initialize(...)
+    end
+    return instance
+end
+
+Object.newAsync = Async(function(callback, self, ...)
+    local instance = {}
+    setmetatable(instance, self)
+    if self.InitializeAsync ~= nil then
+        instance:InitializeAsync(...)()
+    end
+    callback(instance)
+end)
+
+local NewType = function(parent)
+    local type = {}
+    
+    type.__index = type
+
+    setmetatable(type, parent or Object)
+    return type
+end
+return NewType

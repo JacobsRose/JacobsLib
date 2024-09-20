@@ -1,0 +1,156 @@
+--@include ../../Async/sh/2.txt
+local Async = require("../../Async/sh/2.txt")
+local Net = {}
+
+local numberCounts = {}
+numberCounts.float = function()
+    return 64
+end
+
+numberCounts.integer = function (a)
+    local comparer = 1
+    local bits = 1
+    a = math.abs(a)
+    while a>comparer do
+        comparer = comparer * 2
+        bits = bits + 1
+    end
+    return bits + 1
+end
+
+local typeCounts = {}
+
+local function count(a)
+    return typeCounts[type(a)](a) + 4
+end
+
+typeCounts.number = function(a)
+    return numberCounts[math.type(a)](a)
+end
+typeCounts.string = function(a)
+    return #a
+end
+typeCounts.Entity = function ()
+    return 48
+end
+typeCounts.Vector = function(a)
+    local bits = 0
+    for i = 1, 3 do
+        bits = bits + count(a[i])
+    end
+    return bits
+end
+typeCounts.Angle = function (a)
+    local bits = 0
+    for i = 1, 3 do
+        bits = bits + count(a[i])
+    end
+    return bits
+end
+typeCounts.VMatrix = function ()
+end
+typeCounts.boolean = function ()
+    return 1
+end
+typeCounts.Color = function (a)
+    return 8 * 4
+end
+typeCounts.table = function(a)
+    local bits = 0
+    for k,v in pairs(a) do
+        bits = bits + typeCounts[type(k)](k) + typeCounts[type(v)](v)
+    end
+    return bits
+end
+
+
+local typeWrites = {}
+
+local function write(a)
+    typeWrites[type(a)](a)
+end
+
+local numberWrites = {}
+
+numberWrites.integer = function(a)
+    local comparer = 1
+    local bits = 1
+    local b = math.abs(a)
+    while b>comparer do
+        comparer = comparer * 2
+        bits = bits + 1
+    end
+
+    net.writeInt(bits, 6) -- +1 on recieve!
+    net.writeInt(a, bits + 1)
+
+end
+numberWrites.float = function(a)
+    net.writeDouble(a)
+end
+
+typeWrites.number = function(a)
+    numberWrites[math.type(a)](a)
+end
+typeWrites.string = function(a)
+    net.writeString(a)
+end
+typeWrites.Entity = function(a)
+    net.writeEntity(a)
+end
+typeWrites.Vector = function(a)
+    for i = 1, 3 do
+        write(a[i])
+    end
+end
+typeWrites.Angle = function(a)
+    for i = 1, 3 do
+        write(a[i])
+    end
+end
+typeWrites.VMatrix = function(a)
+end
+typeWrites.boolean = function(a)
+    net.writeBool(a)
+end
+typeWrites.Color = function(a)
+    net.writeUInt(a[1], 8)
+    net.writeUInt(a[2], 8)
+    net.writeUInt(a[3], 8)
+    net.writeUInt(a[4], 8)
+end
+typeWrites.table = function(a)
+
+    local tblCount = table.count(a)
+
+    local comparer = 1
+    local bits = 1
+    local b = math.abs(tblCount)
+    while b>comparer do
+        comparer = comparer * 2
+        bits = bits + 1
+    end
+    net.writeInt(bits, 6) -- +1 bit! on recieve
+    net.writeInt(tblCount, bits + 1)
+
+    for k,v in pairs(a) do
+        write(k)
+        write(v)
+    end
+end
+
+Net.sendAsync = Async(function(callback, target, package)
+
+    
+    callback()
+end) 
+Net.TrySend = function (name, a, target)
+    if count(a) <= net.getBitsLeft() then
+        net.start(name)
+        write(a)
+        net.send(target, true)
+        return true
+    end
+    return false
+end
+    

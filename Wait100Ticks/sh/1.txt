@@ -1,0 +1,19 @@
+--@include ../../Async/sh/2.txt
+--@include ../../Hooks/sh/1.txt
+
+local Async = require("../../Async/sh/2.txt")
+local Hooks = require("../../Hooks/sh/1.txt")
+
+local Wait100Ticks = Async(function(callback)
+    local count = 0
+    local function onTick()
+        count = count + 1
+        if count >= 100 then
+            Hooks.Off("tick", onTick)
+            callback()
+        end
+    end
+    Hooks.On("tick", onTick)
+
+end)
+return Wait100Ticks

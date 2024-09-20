@@ -1,0 +1,21 @@
+--@name libs/jacobs/EntityWrap/sv/1.txt
+--@include ../../Object/sh/2.txt
+
+local NewType = require("../../Object/sh/2.txt")
+
+local EntityWrap = NewType()
+
+function EntityWrap:Initialize(e)
+    self.e = e
+end
+
+function EntityWrap:localToWorld(vec)
+    return self.e:localToWorld(vec)
+end
+function EntityWrap:worldToLocal(vec)
+    return self.e:worldToLocal(vec)
+end
+function EntityWrap:localToWorldAngles(ang)
+    return self.e:localToWorldAngles(ang)
+end
+return EntityWrap

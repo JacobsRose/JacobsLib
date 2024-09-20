@@ -1,0 +1,14 @@
+--@include ../../Object/sh/2.txt
+--@include ../../PropWrap/sv/3.txt
+--@include ../../Async/sh/2.txt
+
+local NewType = require("../../Object/sh/2.txt")
+local PropWrap = require("../../PropWrap/sv/3.txt")
+local Async = require("../../Async/sh/2.txt")
+
+local Suspension = NewType()
+Suspension.InitializeAsync = Async(function(callback, self, parent, pos, ang, holo, dim, mass, arm_x, arm_z)
+
+    
+
+end)

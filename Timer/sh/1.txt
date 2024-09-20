@@ -1,0 +1,11 @@
+--@name libs/jacobs/Timer/sh/1.txt
+--@include ../../Object/sh/2.txt
+local NewType = require("../../Object/sh/2.txt")
+local Timer = NewType()
+function Timer:Initialize(delay, reps, func)
+    timer.create(tostring(self), delay, reps, func)
+end
+function Timer:Remove()
+    timer.remove(tostring(self))
+end
+return Timer

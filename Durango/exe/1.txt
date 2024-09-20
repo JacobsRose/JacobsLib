@@ -1,0 +1,10 @@
+--@shared
+--@include ../cl/1.txt
+--@include ../sv/1.txt
+
+if SERVER then
+    local Durango = require("../sv/1.txt")
+    Durango:newAsync(chip():localToWorld(Vector(0,0,50)), Angle(), Color(100,100,100))
+else
+    require("../cl/1.txt")
+end

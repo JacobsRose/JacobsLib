@@ -1,0 +1,80 @@
+--@include ../../Async/sh/2.txt
+--@include ../../Download/sh/1.txt
+--@include ../../Hooks/sh/1.txt
+--@include ../../NextTick/sh/1.txt
+--@include ../../Wait100Ticks/sh/1.txt
+
+local Async = require("../../Async/sh/2.txt")
+local Download = require("../../Download/sh/1.txt")
+local Hooks = require("../../Hooks/sh/1.txt")
+local NextTick = require("../../NextTick/sh/1.txt")
+local Wait100Ticks = require("../../Wait100Ticks/sh/1.txt")
+
+setAuthor((chip():getChipAuthor() or "") .."\n".."[MeshBuilder by Jacobs]")
+
+local meshes = {}
+local queue = {}
+
+local CreateFromObjAsync = Async(function (callback, obj)
+
+    local resume = coroutine.wrap(function()
+        return mesh.createFromObj(obj, true)
+    end)
+    
+    local function onTick()
+
+        while(cpuTotalAverage() < cpuMax() * 0.5 and ramUsed() < ramMax() * 0.8) do
+            local result = resume()
+            if result ~= nil then
+                Hooks.Off("tick", onTick)
+                callback(result)
+                break
+            end
+        end
+    end
+
+    Hooks.On("tick", onTick)
+
+end)
+
+local Load = Async(function(callback, url, isCompressed)
+
+    local file = Download(url)()
+
+    if isCompressed then
+        file = bit.decompress(file)
+    end
+
+    meshes[url] = CreateFromObjAsync(file)()
+
+
+    NextTick()()
+    if queue[url] ~= nil then
+        for holo, name in pairs(queue[url]) do
+            holo:setMesh(meshes[url][name])
+            queue[url][holo] = nil
+        end
+        queue[url] = nil
+    end
+    callback()
+end)
+
+net.receive("NewMesh", function()
+
+    local url = net.readString()
+    local isCompressed = net.readBool()
+    local holo = net.readEntity()
+    local name = net.readString()
+
+    if meshes[url] == nil then --If file is not ready yet
+        if(queue[url]) == nil then --If file loading wasnt started yet
+            queue[url] = {}
+            Load(url, isCompressed) --Load file
+        end
+
+        queue[url][holo] = name --Add holo to queue to be created after file is loaded
+    else
+        holo:setMesh(meshes[url][name])
+    end
+end)
+

@@ -1,0 +1,24 @@
+--@name libs/jacobs/megaroad/sv/1.txt
+--@include ../../Async/sh/2.txt
+--@include ../../PropWrap/sv/3.txt
+--@server
+local Async = require("../../Async/sh/2.txt")
+local PropWrap = require("../../PropWrap/sv/3.txt")
+
+local SpawnRoad = Async(function(callback)
+
+    local len = Vector(32000,32000,0):getLength2D()
+    local amount = math.round(len/480)
+    local last = PropWrap:newAsync(Vector(16000, -16000, 10000), Angle(0,45,0), "models/sprops/rectangles/size_10/rect_480x480x3.mdl", true)()
+    for i = 1, amount-1, 1 do
+        last = PropWrap:newAsync(last:localToWorld(Vector(0,481,0)), Angle(0,45,0), "models/sprops/rectangles/size_10/rect_480x480x3.mdl", true)()
+        local second = PropWrap:newAsync(last:localToWorld(Vector(481,0,0)), Angle(0,45,0), "models/sprops/rectangles/size_10/rect_480x480x3.mdl", true)()
+
+        last.e:setColor(Color(50,50,50,255))
+        second.e:setColor(Color(50,50,50,255))
+        last.e:setNocollideAll(false)
+        second.e:setNocollideAll(false)
+    end
+    callback()
+end)
+SpawnRoad()

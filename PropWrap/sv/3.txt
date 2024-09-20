@@ -1,0 +1,31 @@
+--@name libs/jacobs/PropWrap/sv/3.txt
+--@include ../../Object/sh/2.txt
+--@include ../../PropQueue/sv/2.txt
+--@include ../../Async/sh/2.txt
+
+local NewType = require("../../Object/sh/2.txt")
+local PropQueue = require("../../PropQueue/sv/2.txt")
+local Async = require("../../Async/sh/2.txt")
+
+local PropWrap = NewType()
+
+function PropWrap:Initialize(pos, ang, model, frozen)
+    self.e = prop.create(pos,ang,model,frozen)
+end
+
+PropWrap.InitializeAsync = Async(function(callback, self, pos, ang, model, frozen)
+    PropQueue.addToQueue(function()
+        self.e = prop.create(pos, ang, model, frozen)
+        callback()
+    end)
+end)
+function PropWrap:localToWorld(vec)
+    return self.e:localToWorld(vec)
+end
+function PropWrap:localToWorldAngles(ang)
+    return self.e:localToWorldAngles(ang)
+end
+function PropWrap:getPos()
+    return self.e:getPos()
+end
+return PropWrap
