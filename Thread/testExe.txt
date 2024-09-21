@@ -1,0 +1,6 @@
+--@include sh.txt
+--@include ../PropDefault/sv/1.txt
+local Thread = require("sh.txt")
+
+local function make100prints()
+end

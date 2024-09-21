@@ -1,7 +1,0 @@
---@include ../../Async/sh/2.txt
-local Async = require("../../Async/sh/2.txt")
-
-local Download = Async(function(callback, url)
-    http.get(url, callback)
-end)
-return Download
