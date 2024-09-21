@@ -1,6 +1,12 @@
 --@include sh.txt
 --@include ../PropDefault/sv/1.txt
 local Thread = require("sh.txt")
-
-local function make100prints()
-end
+Thread(function()
+    for i = 1, 10 do 
+        Thread(function(relax) 
+                print(i.."a") 
+                relax()
+                print(i.."b")
+        end)
+    end
+end)
