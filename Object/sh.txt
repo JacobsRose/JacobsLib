@@ -1,6 +1,7 @@
 --[[
-    Object Module
-
+    Object Oriented Programming Core Module
+    
+    By JacobsRose for JacobsLib
 
     BEWARE! SYSTEM SHIT AHEAD!
 ]]

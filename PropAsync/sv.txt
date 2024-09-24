@@ -1,0 +1,68 @@
+--[[
+    Async Prop Spawners
+
+    Needed to spawn many props without crashing the chip
+    
+    By JacobsRose  for JacobsLib
+
+    BEWARE! SYSTEM SHIT AHEAD!
+]]
+
+--@name JacobsLib/PropAsync/sv.txt
+--@server
+--@include ../Async/sh.txt
+
+local Async = require("../Async/sh.txt")
+
+local typeCreators = {
+    prop.create,
+    prop.createCustom,
+    prop.createComponent,
+    prop.createSeat,
+}
+
+local queue
+local nextK
+local nextV
+local function work()
+    if prop.canSpawn() then
+        nextV[3](typeCreators[nextV[1]](unpack(nextV[2])))
+        queue[nextK] = nil
+        nextK, nextV = next(queue, nextK)
+        if nextK then 
+            work()
+        else
+            queue = nil
+        end
+    else
+        timer.simple(1 / prop.spawnRate(), work)
+    end
+end
+
+local addToQueue = function(type, params, callback)
+    if queue == nil then
+        queue = {}
+        table.insert(queue, {type, params, callback})
+        
+
+        nextK, nextV = next(queue)  -- Start Work
+        work()
+    else
+        table.insert(queue, {type, params, callback})
+    end
+
+end
+
+prop.createAsync = Async(function(callback, ...)
+    addToQueue(1, {...}, callback)
+end)
+prop.createCustomAsync = Async(function(callback, ...)
+    addToQueue(2, {...}, callback)
+end)
+prop.createComponentAsync = Async(function(callback, ...)
+    addToQueue(3, {...}, callback)
+end)
+prop.createSeatAsync = Async(function(callback, ...)
+    addToQueue(4, {...}, callback)
+end)
+
