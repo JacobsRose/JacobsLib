@@ -1,9 +1,17 @@
---@name libs/jacobs/Async/sh/2.txt
+--[[
+    Asynchronous Programming Core Module
+
+    By JacobsRose for JacobsLib
+
+    BEWARE! SYSTEM SHIT AHEAD!
+]]
+
+--@name JacobsLib/Async/sh.txt
 local function Async(func)
     return function(...)
 
         local parent = coroutine.running()
-        local thread = coroutine.create(func)
+        local continue1 = coroutine.wrap(func)
         local isYielded = false
         local results
 
@@ -14,8 +22,8 @@ local function Async(func)
             end
         end
 
-        coroutine.resume(thread, callback, ...)
-
+        continue1(callback, ...)
+        
         if results == nil then
             return function()
                 isYielded = true

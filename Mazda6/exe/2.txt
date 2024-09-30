@@ -1,9 +1,0 @@
---@include ../cl/1.txt
---@include ../sv/2.txt
-if SERVER then
-    local Mazda6 = require("../sv/2.txt")
-    Mazda6:newAsync(chip():localToWorld(Vector(0,0,50)), Angle(0))
-    
-elseif CLIENT then
-    require("../cl/1.txt")
-end

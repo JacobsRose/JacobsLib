@@ -1,5 +1,14 @@
---@name libs/jacobs/Object/sh/2.txt
---@include ../../Async/sh/2.txt
+--[[
+    Object Oriented Programming Core Module
+    
+    By JacobsRose for JacobsLib
+
+    BEWARE! SYSTEM SHIT AHEAD!
+]]
+
+--@name JacobsLib/Object/sh.txt
+--@include ../Async/sh.txt
+
 local Async = require("../../Async/sh/2.txt")
 local Object = {}
 
@@ -24,11 +33,12 @@ Object.newAsync = Async(function(callback, self, ...)
     callback(instance)
 end)
 
-local NewType = function(parent)
+local NewType = function(name, parent)
+
     local type = {}
     
     type.__index = type
-
+    
     setmetatable(type, parent or Object)
     return type
 end

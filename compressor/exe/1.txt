@@ -1,3 +1,0 @@
-if CLIENT and player() == owner() then
-    file.write("compressed.txt", bit.compress(file.read("toCompress.txt")))
-end
