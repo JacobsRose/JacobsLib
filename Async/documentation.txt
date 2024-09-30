@@ -7,7 +7,9 @@ Injecting the module in to your script:
 
 Creating an Async function:
 
-    local YourNewAsyncFunction = Async(function(callback, ...) *Code here* end)
+    local YourNewAsyncFunction = Async(function(callback, ...) *Code here* end)\
+
+    Pay attention, given "callback()" is used instead of "return".
 
 Running Async function from anywhere without waiting until it ends its job
 
