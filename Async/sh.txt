@@ -1,6 +1,6 @@
 --[[
     Asynchronous Programming Core Module
-    
+
     By JacobsRose for JacobsLib
 
     BEWARE! SYSTEM SHIT AHEAD!
