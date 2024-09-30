@@ -11,6 +11,21 @@ Creating an Async function:
 
     Pay attention, given "callback()" is used instead of "return".
 
+    Pay attention, you can not create async OOP-like functions with "self" hidden
+
+    In this case, async function should look like this:
+    
+    object.useAsync = Async(function(callback, self, ...)
+
+        **CODE** 
+
+        callback()
+    end)
+
+    Using: 
+
+    local result = object:useAsync(...)()
+
 Running Async function from anywhere without waiting until it ends its job
 
     YourNewAsyncFunction(...)

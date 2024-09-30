@@ -1,0 +1,22 @@
+--[[
+Instructions:
+    
+Injecting the module in to your script:
+
+    require("PathToTheModule")
+
+Creating prop/seat/custom/component just like the common command but with "Async in the end":
+
+    prop.create => prop.createAsync
+
+    prop.createCustom => prop.createCustomAsync
+
+Creating prop without waiting for result: 
+
+    prop.createAsync(pos, ang, model, frozen)
+
+Creating prop and waiting for result inside of async function
+
+    local chair = prop.createCustom(pos,ang,model,frozen)()
+
+]]

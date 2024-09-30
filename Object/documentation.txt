@@ -1,0 +1,41 @@
+--[[
+Instructions:
+    
+Injecting the module in to your script:
+
+    local NewType = require("PathToTheModule")
+
+Creating a class:
+
+    MyClass = newType(parentClass)
+
+Setting up an initializer/class constructior:
+
+    MyClass:Initialize(...)
+
+    end
+
+But, if you have parent class and you need to initialize it too, then do:
+    MyClass:Initialize(...)
+        ParentClass.Initialize(self, ...)
+    end
+Pay attention, you can activate parents initializer WHENEVER you want
+
+And the version for async initializer: 
+
+    MyClass.InitializeAsync = Async(function(callback, self, ...) 
+
+        *Some code here*
+        
+        callback()
+    end
+
+Creating an instance of class:
+
+    local instance = MyClass:new(...)
+
+    OR for async
+
+    local instance = MyClass:newAsync(...)
+
+]]
