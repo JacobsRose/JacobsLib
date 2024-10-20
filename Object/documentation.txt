@@ -1,9 +1,5 @@
 --[[
 Instructions:
-    
-Injecting the module in to your script:
-
-    local NewType = require("PathToTheModule")
 
 Creating a class:
 

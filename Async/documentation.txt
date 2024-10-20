@@ -1,10 +1,6 @@
 --[[
 Instructions:
     
-Injecting the module in to your script:
-
-    local Async = require("PathToTheModule")
-
 Creating an Async function:
 
     local YourNewAsyncFunction = Async(function(callback, ...) *Code here* end)\

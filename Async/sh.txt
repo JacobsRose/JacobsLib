@@ -1,7 +1,7 @@
 --[[
     Asynchronous Programming Core Module
 
-    By JacobsRose for JacobsLib
+    By Jacobs for JacobsLib
 
     BEWARE! SYSTEM SHIT AHEAD!
 ]]

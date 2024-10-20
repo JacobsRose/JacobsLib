@@ -3,7 +3,7 @@
 
     Needed to spawn many props without crashing the chip
     
-    By JacobsRose  for JacobsLib
+    By Jacobs for JacobsLib
 
     BEWARE! SYSTEM SHIT AHEAD!
 ]]
